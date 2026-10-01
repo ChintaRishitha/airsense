@@ -1,4 +1,4 @@
-name: Build AirSense Flutter Web
+name: Build and Deploy AirSense Flutter Web
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     defaults:
@@ -32,8 +32,10 @@ jobs:
       - name: Build Flutter Web
         run: flutter build web --release
 
-      - name: Upload Flutter Web Build
-        uses: actions/upload-artifact@v4
+      - name: Deploy to Netlify
+        uses: netlify/actions/cli@master
         with:
-          name: airsense-web
-          path: frontend/build/web
+          args: deploy --dir=frontend/build/web --prod
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
