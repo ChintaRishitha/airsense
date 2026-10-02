@@ -1,4 +1,6 @@
 name: Build and Deploy AirSense Flutter Web
+- name: Set up Flutter
+  uses: subosito/flutter-action@v2
 
 on:
   push:
