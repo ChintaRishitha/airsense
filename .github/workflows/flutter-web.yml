@@ -1,4 +1,4 @@
-name: Build AirSense Flutter Web
+name: Build and Deploy AirSense Flutter Web
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -34,3 +34,8 @@ jobs:
       - name: Build Flutter web
         working-directory: frontend
         run: flutter build web --release
+
+      - name: Deploy to Netlify
+        run: npx netlify-cli deploy --prod --dir=frontend/build/web --site=${{ secrets.NETLIFY_SITE_ID }}
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
